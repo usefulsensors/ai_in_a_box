@@ -1,0 +1,15 @@
+# Ignore everything in these directories.
+downloaded/
+models/
+# Ignore vim files.
+*~
+*.swp
+*.swo
+__pycache__
+# Ignore mac files.
+.DS_Store
+# Ignore lock files.
+tts.lock
+volume.lock
+# Ignore log files.
+llm*.log
