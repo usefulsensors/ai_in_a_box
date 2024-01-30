@@ -1,4 +1,4 @@
-# AI in a Box.
+# AI in a Box repo introduction.
 
 AI in a Box from [Useful Sensors](https://usefulsensors.com/) showcases
 speech-based AI applications.  All models are on-device and run locally with
@@ -10,15 +10,32 @@ This repo provides open source code and setup instructions for microSD card.
 We do not plan to maintain this repo and encourage interested parties to make
 forks.
 
-## Application modes.
+- [AI in a Box repo introduction.](#ai-in-a-box-repo-introduction)
+- [Application modes.](#application-modes)
+- [Connectors and buttons.](#connectors-and-buttons)
+- [Installation.](#installation)
+  - [Quick setup.](#quick-setup)
+  - [Full installation from baseline image.](#full-installation-from-baseline-image)
+    - [Boot and initial sanity checks.](#boot-and-initial-sanity-checks)
+      - [Support for external devices.](#support-for-external-devices)
+    - [Software.](#software)
+    - [Model download and extraction.](#model-download-and-extraction)
+    - [Permissions for scripts.](#permissions-for-scripts)
+    - [Test run AI in a Box.](#test-run-ai-in-a-box)
+    - [Startup service.](#startup-service)
+    - [Optional steps.](#optional-steps)
+- [Model details.](#model-details)
+- [Contributors.](#contributors)
+
+# Application modes.
 
 AI in a Box has three speech driven modes with different display layouts.
 
-| Mode      | Wake word(s)       | Notes                                  |
-| --------- | ------------------ | -------------------------------------- |
-| Caption   | "caption"          | Transcription.  English. USB keyboard. |
-| Chatty    | "chatty"           | Answers questions.  LLM 4-bit weights. |
-| Translate | "translate x to y" | e.g.: translate French to German.      |
+| Mode      | Wake word(s)       | Notes                                             |
+| --------- | ------------------ | ------------------------------------------------- |
+| Caption   | "caption"          | Transcription in English.  USB keyboard.          |
+| Chatty    | "chatty"           | Answers questions in English.  LLM 4-bit weights. |
+| Translate | "translate x to y" | e.g.: translate French to German.                 |
 
 Apply power with the USB-C connector on top.
 
@@ -34,15 +51,22 @@ Translate mode.
 
 <img src="images/translate_mode.jpg" alt="translate mode" width="500"/>
 
+The translate mode supports the selection of languages defined in
+`lang_to_flores200_dict` in this [code](/state_machine.py).  It uses non-Latin
+font typefaces for Chinese, Japanese, Korean and Thai languages based on this
+[code](/fontfile.py).  All other selectable languages use a default Latin font.
 
-## Connectors and buttons.
+We describe the models used in AI in a Box [here](#model-details).
+
+# Connectors and buttons.
 
 Power to the top USB-C connector boots AI in a Box.
 
 <img src="images/power.jpg" alt="power" width="500"/>
 
- Optional HDMI display if connected before boot (some display resolutions may
- not work such as 800x480).
+Optional HDMI display if connected before boot (some display resolutions may
+not work such as 800x480).  We find this physical connection is not always
+reliable.
 
 LAN connection is needed for
 [full installation](#full-installation-from-baseline-image).
@@ -51,6 +75,9 @@ LAN connection is needed for
 
 Optional USB-C keyboard for caption mode transcription in English.
 
+More details on external device support are
+[here](#support-for-external-devices).
+
 There are four buttons for navigating the pop-up menu:
 * Up/Down keys toggle between the three [modes](#application-modes).
 * Right key triggers a menu for volume and language selection.
@@ -58,13 +85,17 @@ There are four buttons for navigating the pop-up menu:
   * use Left key to navigate back.
 
 <img src="images/buttons.jpg" alt="buttons" width="200"/>
-The volume selection (default `50`) is retained when rebooted.
+
+The volume selection is retained when rebooted.  Our default value is `50`.
+
 
 # Installation.
 
-For this project we use Ubuntu OS, specifically Jammy CLI b18 release from
-[here](https://github.com/radxa-build/rock-5a/releases).  It is installed in
-the microSD images described below.
+For this project we use Ubuntu OS server, specifically Jammy CLI b18 release
+from
+[here](https://github.com/radxa-build/rock-5a/releases).  This release was
+marked "latest" avalable on 01/26/2024.  It is installed in the microSD images
+described below.
 
 The application is coded with Python scripts and runs Python3.10.
 
@@ -73,33 +104,43 @@ SSH.
 
 ## Quick setup.
 
-Download this compressed image then extract and flash to a 16GB or higher
-microSD card.
+Download this compressed
+[image](https://storage.googleapis.com/download.usefulsensors.com/ai_in_a_box/ai_in_a_box_11gb_20240126.img.gz)
+then flash to a 16GB or higher microSD card.
 ```console
 cd
-curl -L -O https:TODO
-tar -xf TODO.tar.gz
+curl -L -O https://storage.googleapis.com/download.usefulsensors.com/ai_in_a_box/ai_in_a_box_11gb_20240126.img.gz
 ```
-Flash the image file `TODO` using BalenaEtcher or other.
+Flash the compressed image file `ai_in_a_box_11gb_20240126.img.gz` using
+[BalenaEtcher](https://etcher.balena.io/) or other method.
 
 Insert the flashed microSD card in AI in a Box after removing the four screws
 securing the rear panel.  Connect USB-C power to boot AI in a Box into the
-caption mode.  After around 60 seconds a prompt "Ready..." appears on the
+caption mode.
+
+<img src="images/booting.jpg" alt="booting..." width="150"/>
+
+After around 60 seconds "Ready..." appears on the
 display.
+
+<img src="images/ready.jpg" alt="ready" width="150"/>
+
+AI in a Box is now listening for speech.
 
 ## Full installation from baseline image.
 
 AI in a Box hardware has custom hardware for the display and audio and USB
 keyboard.  For the full installation or experimentation we provide a baseline
 microSD card image with the OS and needed overlays and configuration for the
-custom hardware.  You will also need GitHub access.
+custom hardware.  You will also need GitHub access to complete these steps.
 
 This baseline image does not include our application code which is added during
 this installation.  The preparation of this image is not documented in this
 repo.  It was created on a Sandisk A1 16GB microSD card (SDSQUAR-O16G-GN6MN
 with 15,931,539,456 Bytes storage).
 
-Download this compressed image.
+Download this
+[compressed image](https://storage.googleapis.com/download.usefulsensors.com/ai_in_a_box/ai_in_a_box_baseline_16gb_20240125.img.gz).
 ```console
 cd
 curl -L -O https://storage.googleapis.com/download.usefulsensors.com/ai_in_a_box/ai_in_a_box_baseline_16gb_20240125.img.gz
@@ -140,10 +181,11 @@ ls /dev/ttyS*
 ```
 
 #### Support for external devices.
-* Power supply of at least 20 W, see Rock 5A [power](https://radxa.com/products/rock5/5a#techspec) support.
-* USB keyboard requires a USB-C cable that supports data.  It has been tested on MacBook TextEdit application.  Mac pop-up setup of the unknown keyboard can be cancelled.
-* HDMI monitor requires reboot.  However some HDMI displays may not work (for example 800x480 display resolution).
-* USB audio devices and the headset audio jack are not supported by our application.
+* Power supply of at least 20 W.  For USB protocol details see Rock 5A [power](https://radxa.com/products/rock5/5a#techspec) support.
+* HDMI monitor requires reboot.  However some HDMI displays may not work for example 800x480 display resolution.  We find this physical connection is not always reliable.
+* Headset audio jack is not supported by AI in a Box.
+* USB audio devices are not supported by AI in a Box.  We added experimental script support for USB devices [here](/configure_devices.sh) but find it is not reliable across boots.
+* USB keyboard requires a USB-C cable that supports data.  It has been tested on MacBook TextEdit application.  We ignore the Mac pop-up prompt for the unknown keyboard layout.
 
 
 ### Software.
@@ -227,28 +269,31 @@ First reboot AI in a Box after above installation.
 ```console
 sudo reboot
 ```
-SSH back in to AI in a Box and start the launcher script.  AI in a Box takes
-around 60 seconds to start caption mode `Ready...`.  Note it is run as
-superuser.
+
+SSH back in to AI in a Box and start the launcher script.
 ```console
 cd
 sudo ai_in_a_box/run_chatty.sh
 ```
+AI in a Box takes around 60 seconds to start caption mode `Ready...`.  Note the
+launcher script is run with superuser privileges.
+
 Ignore this error in the SSH session.
 ```bash
 /usr/local/lib/python3.10/dist-packages/pygame_menu/sound.py:204: UserWarning: sound error: No such device.
   warn('sound error: ' + str(e))
 ```
-The above error is superceded with this status.
+The above error is superceded with this log status.
 ```bash
 audio input stream started successfully: True
 ```
 
-If needed we can terminate the application in another SSH session with this
+If needed we can exit the application in another SSH session with this
 command.
 ```console
 sudo pkill -9 python
 ```
+AI in a Box now displays Ubuntu's console prompt.
 
 ### Startup service.
 
@@ -294,6 +339,13 @@ You may now remove and reinsert the USB-C power to hard boot AI in a Box.
 
 ### Optional steps.
 
+Optional: we reduced our
+[quick setup](#quick-setup) image size using third-party tools `gparted` to
+reduce the microSD card partition size and `DD` to clone the image to ~ 11GB.
+This step is optional.  If your workflow requires this we recommend leaving at
+least 1GB of unused space to run AI in a Box.  Otherwise use all free space on
+your card (16GB or larger) when running AI in a Box.
+
 Optional: inspect the application log in an SSH session.
 ```console
 watch -n 1 tail -n 20 /tmp/run_chatty_log.txt
@@ -331,7 +383,6 @@ the AI in a Box microSD card.
 | [piper_tts_en_US.tar.gz](https://github.com/rhasspy/piper)           | [link](https://storage.googleapis.com/download.usefulsensors.com/ai_in_a_box/piper_tts_en_US.tar.gz) | downloaded/         | Text to speech (TTS) for chatty mode  |
 | [silero_vad.tar.gz](https://github.com/snakers4/silero-vad)                | [link](https://storage.googleapis.com/download.usefulsensors.com/ai_in_a_box/silero_vad.tar.gz) | downloaded/         | Voice activity detection                |
 
-The translate mode supports the fonts in [this](/fonts) folder.
 
 # Contributors.
 * Nat Jeffries (@njeffrie)
