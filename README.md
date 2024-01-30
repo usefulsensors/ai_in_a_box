@@ -13,11 +13,11 @@ forks.
 - [AI in a Box repo introduction.](#ai-in-a-box-repo-introduction)
 - [Application modes.](#application-modes)
 - [Connectors and buttons.](#connectors-and-buttons)
+  - [Support for external devices.](#support-for-external-devices)
 - [Installation.](#installation)
   - [Quick setup.](#quick-setup)
   - [Full installation from baseline image.](#full-installation-from-baseline-image)
     - [Boot and initial sanity checks.](#boot-and-initial-sanity-checks)
-      - [Support for external devices.](#support-for-external-devices)
     - [Software.](#software)
     - [Model download and extraction.](#model-download-and-extraction)
     - [Permissions for scripts.](#permissions-for-scripts)
@@ -87,6 +87,13 @@ There are four buttons for navigating the pop-up menu:
 <img src="images/buttons.jpg" alt="buttons" width="200"/>
 
 The volume selection is retained when rebooted.  Our default value is `50`.
+
+## Support for external devices.
+* Power supply of at least 20 W.  For USB protocol details see Rock 5A [power](https://radxa.com/products/rock5/5a#techspec) support.
+* HDMI monitor requires reboot.  However some HDMI displays may not work for example 800x480 display resolution.  This connector and third-party cables may not function as it is recessed.
+* Headset audio jack is not supported by AI in a Box.
+* USB audio devices are not supported by AI in a Box.  We added experimental script support for USB devices [here](/configure_devices.sh) but it is not reliable in our testing.
+* USB keyboard requires a USB-C cable that supports data.  It has been tested on MacBook TextEdit application.  We ignore the Mac pop-up prompt for the unknown keyboard layout.
 
 
 # Installation.
@@ -179,14 +186,6 @@ For serial port needed for the USB keyboard feature check `/dev/ttyS6`.
 ```console
 ls /dev/ttyS*
 ```
-
-#### Support for external devices.
-* Power supply of at least 20 W.  For USB protocol details see Rock 5A [power](https://radxa.com/products/rock5/5a#techspec) support.
-* HDMI monitor requires reboot.  However some HDMI displays may not work for example 800x480 display resolution.  We find this physical connection is not always reliable.
-* Headset audio jack is not supported by AI in a Box.
-* USB audio devices are not supported by AI in a Box.  We added experimental script support for USB devices [here](/configure_devices.sh) but find it is not reliable across boots.
-* USB keyboard requires a USB-C cable that supports data.  It has been tested on MacBook TextEdit application.  We ignore the Mac pop-up prompt for the unknown keyboard layout.
-
 
 ### Software.
 
