@@ -1,4 +1,3 @@
-  GNU nano 6.2                                                          ai_in_a_box/configure_devices.sh
 #!/bin/bash
 #
 # See README.md:  chmod +x ./configure_devices.sh
