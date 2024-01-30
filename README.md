@@ -37,7 +37,7 @@ AI in a Box has three speech driven modes with different display layouts.
 | Chatty    | "chatty"           | Answers questions in English.  LLM 4-bit weights. |
 | Translate | "translate x to y" | e.g.: translate French to German.                 |
 
-Apply power with the USB-C connector on top.
+Apply power to the top USB-C connector (not the side USB-C connector).
 
 Boots into caption mode for continuous transcription in English.
 
@@ -60,7 +60,8 @@ We describe the models used in AI in a Box [here](#model-details).
 
 # Connectors and buttons.
 
-Power to the top USB-C connector boots AI in a Box.
+Power to the top USB-C connector boots AI in a Box (do not connect power to the
+side USB-C connector).
 
 <img src="images/power.jpg" alt="power" width="500"/>
 
@@ -73,7 +74,8 @@ LAN connection is needed for
 
 <img src="images/lan_usbc_keyboard.jpg" alt="lan_usbc" width="200"/>
 
-Optional USB-C keyboard for caption mode transcription in English.
+Optional USB-C keyboard for caption mode transcription in English.  This USB-C
+connector does not support powering AI in a Box.
 
 More details on external device support are
 [here](#support-for-external-devices).
@@ -89,11 +91,11 @@ There are four buttons for navigating the pop-up menu:
 The volume selection is retained when rebooted.  Our default value is `50`.
 
 ## Support for external devices.
-* Power supply of at least 20 W.  For USB protocol details see Rock 5A [power](https://radxa.com/products/rock5/5a#techspec) support.
+* Power supply of at least 20 W to the top connector.  For USB protocol details see Rock 5A [power](https://radxa.com/products/rock5/5a#techspec) support.
 * HDMI monitor requires reboot.  However some HDMI displays may not work for example 800x480 display resolution.  This connector and third-party cables may not function as it is recessed.
 * Headset audio jack is not supported by AI in a Box.
 * USB audio devices are not supported by AI in a Box.  We added experimental script support for USB devices [here](/configure_devices.sh) but it is not reliable in our testing.
-* USB keyboard requires a USB-C cable that supports data.  It has been tested on MacBook TextEdit application.  We ignore the Mac pop-up prompt for the unknown keyboard layout.
+* USB keyboard requires a USB-C cable that supports data.  This side connector is not used to power AI in a Box.  USB keyboard has been tested on MacBook TextEdit application.  We ignore the MacOS pop-up prompt for the unknown keyboard layout.
 
 
 # Installation.
