@@ -1,22 +1,26 @@
-# AI in a Box repo introduction.
+# AI in a Box.
 
 AI in a Box from [Useful Sensors](https://usefulsensors.com/) showcases
 speech-based AI applications.  All models are on-device and run locally with
-no internet connection so are private by design.  It ships with a bootable
-microSD card containing Ubuntu server operating system and application code.
+no internet connection so are private by design.  It can be ordered from
+[Crowd Supply](https://www.crowdsupply.com/useful-sensors/ai-in-a-box)
+and will ship with a bootable microSD card containing Ubuntu server operating
+system and all application code.
 
-This repo provides open source code and setup instructions for microSD card.
+We describe the models used in AI in a Box
+[below](#model-details).  This repo provides the open source code and optional
+installation steps to rebuild the microSD card.
 
 We do not plan to maintain this repo and encourage interested parties to make
 forks.
 
-- [AI in a Box repo introduction.](#ai-in-a-box-repo-introduction)
-- [Application modes.](#application-modes)
-- [Connectors and buttons.](#connectors-and-buttons)
+- [AI in a Box.](#ai-in-a-box)
+- [Quick start.](#quick-start)
+  - [Connectors and buttons.](#connectors-and-buttons)
   - [Support for external devices.](#support-for-external-devices)
-- [Installation.](#installation)
-  - [Quick setup.](#quick-setup)
-  - [Full installation from baseline image.](#full-installation-from-baseline-image)
+- [Optional Installation.](#optional-installation)
+  - [Quick installation.](#quick-installation)
+  - [Full installation.](#full-installation)
     - [Boot and initial sanity checks.](#boot-and-initial-sanity-checks)
     - [Software.](#software)
     - [Model download and extraction.](#model-download-and-extraction)
@@ -27,7 +31,7 @@ forks.
 - [Model details.](#model-details)
 - [Contributors.](#contributors)
 
-# Application modes.
+# Quick start.
 
 AI in a Box has three speech driven modes with different display layouts.
 
@@ -37,68 +41,68 @@ AI in a Box has three speech driven modes with different display layouts.
 | Chatty    | "chatty"           | Answers questions in English.  LLM 4-bit weights. |
 | Translate | "translate x to y" | e.g.: translate French to German.                 |
 
-Apply power to the top USB-C connector (not the side USB-C connector).
-
-Boots into caption mode for continuous transcription in English.
+Quick start: apply power to the **top** USB-C connector.  The side USB-C connector
+does not support powering the box.  AI in a Box boots into caption mode for
+continuous transcription in English.
 
 <img src="images/caption_mode.jpg" alt="caption mode on boot" width="500"/>
 
-Chatty mode.
+Chatty mode answers question in English.
 
 <img src="images/chatty_mode.jpg" alt="chatty mode" width="500"/>
 
-Translate mode.
+Translate mode translates speech in a choice of languages.
 
 <img src="images/translate_mode.jpg" alt="translate mode" width="500"/>
 
-The translate mode supports the selection of languages defined in
-`lang_to_flores200_dict` in this [code](/state_machine.py).  It uses non-Latin
+The selection of translation languages is defined in
+`lang_to_flores200_dict` in this [code](/state_machine.py).  It uses specific
 font typefaces for Chinese, Japanese, Korean and Thai languages based on this
 [code](/fontfile.py).  All other selectable languages use a default Latin font.
 
-We describe the models used in AI in a Box [here](#model-details).
+## Connectors and buttons.
 
-# Connectors and buttons.
-
-Power to the top USB-C connector boots AI in a Box (do not connect power to the
-side USB-C connector).
+The **top** USB-C connector powers AI in a Box. The side USB-C connector
+does not support powering the box.
 
 <img src="images/power.jpg" alt="power" width="500"/>
 
-Optional HDMI display if connected before boot (some display resolutions may
-not work such as 800x480).  We find this physical connection is not always
-reliable.
-
-LAN connection is needed for
-[full installation](#full-installation-from-baseline-image).
-
-<img src="images/lan_usbc_keyboard.jpg" alt="lan_usbc" width="200"/>
-
-Optional USB-C keyboard for caption mode transcription in English.  This USB-C
-connector does not support powering AI in a Box.
-
-More details on external device support are
-[here](#support-for-external-devices).
-
-There are four buttons for navigating the pop-up menu:
-* Up/Down keys toggle between the three [modes](#application-modes).
-* Right key triggers a menu for volume and language selection.
+There are four buttons for navigating the modes and menu:
+* Up/Down keys toggle between the three [modes](#quick-start).
+* Right key triggers a pop-up menu for volume and language selection.
   * use Up/Down to navigate and Right key to select.
   * use Left key to navigate back.
 
 <img src="images/buttons.jpg" alt="buttons" width="200"/>
 
-The volume selection is retained when rebooted.  Our default value is `50`.
+The volume selection `[0, 100]` is retained when rebooted.  Our default value is
+`50` and `0` mutes the speaker.
+
+The LAN connector is not used in normal AI in a Box operation.  It is used to
+rebuild the microSD card if desired.
+
+<img src="images/lan_usbc_keyboard.jpg" alt="lan_usbc" width="200"/>
+
+Optional USB-C keyboard for caption mode transcription in English.  This side
+USB-C connector does not support powering AI in a Box.
+
 
 ## Support for external devices.
 * Power supply of at least 20 W to the top connector.  For USB protocol details see Rock 5A [power](https://radxa.com/products/rock5/5a#techspec) support.
-* HDMI monitor requires reboot.  However some HDMI displays may not work for example 800x480 display resolution.  This connector and third-party cables may not function as it is recessed.
+* Optional HDMI monitor requires reboot.  However some HDMI displays may not work for example 800x480 display resolution.  This connector and third-party cables may not function reliably as the connector is recessed.
+* Optional USB keyboard requires a USB-C cable that supports data.  This side USB-C connector does not support powering AI in a Box.  USB keyboard has been tested on MacBook TextEdit application.  We ignore the MacOS pop-up prompt for the unknown keyboard layout.
 * Headset audio jack is not supported by AI in a Box.
-* USB audio devices are not supported by AI in a Box.  We added experimental script support for USB devices [here](/configure_devices.sh) but it is not reliable in our testing.
-* USB keyboard requires a USB-C cable that supports data.  This side connector is not used to power AI in a Box.  USB keyboard has been tested on MacBook TextEdit application.  We ignore the MacOS pop-up prompt for the unknown keyboard layout.
+* USB audio devices are not supported by AI in a Box.  We added experimental script support for USB devices [here](/configure_devices.sh) but device selection is not reliable in our testing.
+* LAN connector is only needed when rebuilding the microSD card with a [full installation](#full-installation).  It is not used in normal operation.
 
 
-# Installation.
+# Optional Installation.
+
+This section is not required for AI in a Box ordered from
+[Crowd Supply](https://www.crowdsupply.com/useful-sensors/ai-in-a-box).
+Simply power the box and use it.  We provide this
+installation section for people who need to rebuild the microSD memory card or
+experiment with the code in this repo.
 
 For this project we use Ubuntu OS server, specifically Jammy CLI b18 release
 from
@@ -111,9 +115,9 @@ The application is coded with Python scripts and runs Python3.10.
 The microSD card images have username `ubuntu` and password `ubunturock` for
 SSH.
 
-## Quick setup.
+## Quick installation.
 
-Download this compressed
+Simply download this compressed
 [image](https://storage.googleapis.com/download.usefulsensors.com/ai_in_a_box/ai_in_a_box_11gb_20240126.img.gz)
 then flash to a 16GB or higher microSD card.
 ```console
@@ -136,12 +140,12 @@ display.
 
 AI in a Box is now listening for speech.
 
-## Full installation from baseline image.
+## Full installation.
 
 AI in a Box hardware has custom hardware for the display and audio and USB
-keyboard.  For the full installation or experimentation we provide a baseline
-microSD card image with the OS and needed overlays and configuration for the
-custom hardware.  You will also need GitHub access to complete these steps.
+keyboard.  For the full installation we provide a baseline microSD card image
+with the OS and needed overlays and configuration for the custom hardware.  You
+will also need GitHub access to complete these steps.
 
 This baseline image does not include our application code which is added during
 this installation.  The preparation of this image is not documented in this
@@ -331,7 +335,7 @@ AI in a Box does not need any LAN internet connection following this step.
 ```console
 sudo reboot
 ```
-AI in a Box will boot into [caption mode](#application-modes) `Ready...` after
+AI in a Box will boot into [caption mode](#quick-start) `Ready...` after
 about 60 seconds.  Speak to the box to see a transcription on the display.
 
 The full installation is now complete.
@@ -341,11 +345,10 @@ You may now remove and reinsert the USB-C power to hard boot AI in a Box.
 ### Optional steps.
 
 Optional: we reduced our
-[quick setup](#quick-setup) image size using third-party tools `gparted` to
-reduce the microSD card partition size and `DD` to clone the image to ~ 11GB.
-This step is optional.  If your workflow requires this we recommend leaving at
-least 1GB of unused space to run AI in a Box.  Otherwise use all free space on
-your card (16GB or larger) when running AI in a Box.
+[quick installation](#quick-installation) image size using third-party tools
+`gparted` to reduce the microSD card partition size and `DD` to clone the image
+to ~ 11GB.  This step is optional.  If your workflow requires this we recommend
+leaving at least 1GB of unused space to run AI in a Box.
 
 Optional: inspect the application log in an SSH session.
 ```console
@@ -378,11 +381,11 @@ the AI in a Box microSD card.
 
 | Name and source URL              | download URL | microSD location | Task                       |
 | -------------------------------- | ------------ | ------------------- | --------------------------------------- |
-| [useful-transformers_wheel.tar.gz](https://github.com/usefulsensors/useful-transformers) | [link](https://storage.googleapis.com/download.usefulsensors.com/ai_in_a_box/useful-transformers_wheel.tar.gz) | python3.10 package  | Speech to text (S2T) in all modes       |
+| [useful-transformers_wheel.tar.gz](https://github.com/usefulsensors/useful-transformers) | [link](https://storage.googleapis.com/download.usefulsensors.com/ai_in_a_box/useful-transformers_wheel.tar.gz) | python3.10 package  | Speech to text in all modes       |
 | [nllb-200-distilled-600M.tar.gz](https://huggingface.co/facebook/nllb-200-distilled-600M)   | [link](https://storage.googleapis.com/download.usefulsensors.com/ai_in_a_box/nllb-200-distilled-600M.tar.gz) | downloaded/         | Language translation for translate mode |
-| [orca-mini-3b.tar.gz](https://huggingface.co/TheBloke/orca_mini_3B-GGML)              | [link](https://storage.googleapis.com/download.usefulsensors.com/ai_in_a_box/orca-mini-3b.tar.gz) | downloaded/         | LLM for chatty mode                     |
+| [orca-mini-3b.tar.gz](https://huggingface.co/TheBloke/orca_mini_3B-GGML)              | [link](https://storage.googleapis.com/download.usefulsensors.com/ai_in_a_box/orca-mini-3b.tar.gz) | downloaded/         | Large language model for chatty mode  |
 | [piper_tts_en_US.tar.gz](https://github.com/rhasspy/piper)           | [link](https://storage.googleapis.com/download.usefulsensors.com/ai_in_a_box/piper_tts_en_US.tar.gz) | downloaded/         | Text to speech (TTS) for chatty mode  |
-| [silero_vad.tar.gz](https://github.com/snakers4/silero-vad)                | [link](https://storage.googleapis.com/download.usefulsensors.com/ai_in_a_box/silero_vad.tar.gz) | downloaded/         | Voice activity detection                |
+| [silero_vad.tar.gz](https://github.com/snakers4/silero-vad)                | [link](https://storage.googleapis.com/download.usefulsensors.com/ai_in_a_box/silero_vad.tar.gz) | downloaded/         | Voice activity detection in all modes |
 
 
 # Contributors.
