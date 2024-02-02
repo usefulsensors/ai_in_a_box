@@ -55,7 +55,7 @@ transcription in English.
 
 <img src="images/caption_mode.jpg" alt="caption mode on boot" width="500"/>
 
-Chatty mode answers question in English.
+Chatty mode answers questions in English.
 
 <img src="images/chatty_mode.jpg" alt="chatty mode" width="500"/>
 
