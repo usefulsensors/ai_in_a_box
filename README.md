@@ -41,9 +41,17 @@ AI in a Box has three speech driven modes with different display layouts.
 | Chatty    | "chatty"           | Answers questions in English.  LLM 4-bit weights. |
 | Translate | "translate x to y" | e.g.: translate French to German.                 |
 
-Quick start: apply power to the **top** USB-C connector.  The side USB-C connector
-does not support powering the box.  AI in a Box boots into caption mode for
-continuous transcription in English.
+Quick start: apply power to the **top** USB-C connector to boot AI in a Box.
+The side USB-C connector does not support powering the box.
+
+<img src="images/booting.jpg" alt="booting..." width="150"/>
+
+After around 60 seconds "Ready..." appears on the display.
+
+<img src="images/ready.jpg" alt="ready" width="150"/>
+
+AI in a Box is now listening for speech.  This is caption mode with continuous
+transcription in English.
 
 <img src="images/caption_mode.jpg" alt="caption mode on boot" width="500"/>
 
@@ -100,9 +108,9 @@ USB-C connector does not support powering AI in a Box.
 
 This section is not required for AI in a Box ordered from
 [Crowd Supply](https://www.crowdsupply.com/useful-sensors/ai-in-a-box).
-Simply power the box and use it.  We provide this
-installation section for people who need to rebuild the microSD memory card or
-experiment with the code in this repo.
+Simply power the box and use it.  We provide this installation section for
+people who need to rebuild the microSD memory card or experiment with code
+on AI in a Box.
 
 For this project we use Ubuntu OS server, specifically Jammy CLI b18 release
 from
@@ -130,15 +138,6 @@ Flash the compressed image file `ai_in_a_box_11gb_20240126.img.gz` using
 Insert the flashed microSD card in AI in a Box after removing the four screws
 securing the rear panel.  Connect USB-C power to boot AI in a Box into the
 caption mode.
-
-<img src="images/booting.jpg" alt="booting..." width="150"/>
-
-After around 60 seconds "Ready..." appears on the
-display.
-
-<img src="images/ready.jpg" alt="ready" width="150"/>
-
-AI in a Box is now listening for speech.
 
 ## Full installation.
 
