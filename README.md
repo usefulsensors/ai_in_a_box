@@ -18,7 +18,7 @@ forks.
 - [Quick start.](#quick-start)
   - [Connectors and buttons.](#connectors-and-buttons)
   - [Support for external devices.](#support-for-external-devices)
-- [Logging in remotely.](#logging-in-remotely)
+- [Logging in remotely](#logging-in-remotely)
 - [Optional Installation.](#optional-installation)
   - [Quick installation.](#quick-installation)
   - [Full installation.](#full-installation)
@@ -95,18 +95,21 @@ rebuild the microSD card if desired.
 Optional USB-C keyboard for caption mode transcription in English.  This side
 USB-C connector does not support powering AI in a Box.
 
+<img src="images/left_side_connectors.jpg" alt="connectors" width="200"/>
+
+Rock 5A board USB-A and LAN connectors are exposed.
 
 ## Support for external devices.
 * Power supply of at least 20 W to the top connector.  For USB protocol details see Rock 5A [power](https://radxa.com/products/rock5/5a#techspec) support.
 * Optional HDMI monitor requires reboot.  However some HDMI displays may not work for example 800x480 display resolution.  This connector and third-party cables may not function reliably as the connector is recessed.
 * Optional USB keyboard requires a USB-C cable that supports data.  This side USB-C connector does not support powering AI in a Box.  USB keyboard has been tested on MacBook TextEdit application.  We ignore the MacOS pop-up prompt for the unknown keyboard layout.
 * Headset audio jack is not supported by AI in a Box.
-* USB audio devices are not supported by AI in a Box.  We added experimental script support for USB devices [here](/configure_devices.sh) but device selection is not reliable in our testing.
+* USB audio devices are not supported by AI in a Box.  We added experimental script support for USB-A connected devices [here](/configure_devices.sh) but device selection is not reliable in our testing.
 * LAN connector is only needed when rebuilding the microSD card with a [full installation](#full-installation).  It is not used in normal operation.
 
 # Logging in remotely
 
-If you do want to modify the underlying Linux installation, the box is running Ubuntu 22.04, with the username `ubuntu` and password `ubunturock`. You can log in using SSH if you have a wired Ethernet LAN cable connected. We've found the easiest way to identify the IP address is with a command like `nmap -Pn -p22 --open 192.168.1.0/24` on a Mac computer. You can try to use a USB keyboard, but the prompt disappears quickly on boot, so the SSH option is easier. Once you're in you have root access, so you can make whatever changes you want. If you do want to revert to factory settings, you can look at the Quick Installation section below.
+If you do want to modify the underlying Linux installation, the box is running Ubuntu 22.04, with the username `ubuntu` and password `ubunturock`. You can log in using SSH if you have a wired Ethernet LAN cable connected. We've found the easiest way to identify the IP address is with a command like `nmap -Pn -p22 --open 192.168.1.0/24` on a Mac computer. You can try to use a USB-A connected keyboard, but the prompt disappears quickly on boot, so the SSH option is easier. Once you're in you have root access, so you can make whatever changes you want. If you do want to revert to factory settings, you can look at the Quick Installation section below.
 
 # Optional Installation.
 
